@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import Modal from '../../components/Modal'
 import Button from '../../components/Button'
 import FormField, { Input, Textarea, Toggle } from '../../components/FormField'
@@ -29,14 +29,14 @@ export default function NewCampaignModal({ isOpen, onClose }) {
         { value: '+919876543211', label: '+91 98765 43211 (Secondary)' },
     ]
 
-    const handleChange = (field) => (e) => {
+    const handleChange = useCallback((field) => (e) => {
         const value = e?.target ? e.target.value : e
         setFormData(prev => ({ ...prev, [field]: value }))
-    }
+    }, [])
 
-    const handleToggle = (field) => (value) => {
+    const handleToggle = useCallback((field) => (value) => {
         setFormData(prev => ({ ...prev, [field]: value }))
-    }
+    }, [])
 
     const handleSubmit = async () => {
         setLoading(true)
@@ -116,8 +116,8 @@ export default function NewCampaignModal({ isOpen, onClose }) {
                                 key={method}
                                 onClick={() => setFormData(prev => ({ ...prev, contactMethod: method }))}
                                 className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium capitalize transition-all ${formData.contactMethod === method
-                                        ? 'bg-primary-500 text-white'
-                                        : 'text-surface-400 hover:text-white'
+                                    ? 'bg-primary-500 text-white'
+                                    : 'text-surface-400 hover:text-white'
                                     }`}
                             >
                                 {method === 'paste' ? 'Paste Numbers' : method === 'upload' ? 'Upload CSV' : 'Contact Group'}

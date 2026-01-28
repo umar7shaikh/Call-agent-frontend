@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import Drawer from '../../components/Drawer'
 import Button from '../../components/Button'
 import FormField, { Input, Textarea, Toggle } from '../../components/FormField'
@@ -33,16 +33,16 @@ export default function NewAgentDrawer({ isOpen, onClose }) {
         { value: 'INBOUND', label: 'Inbound' },
     ]
 
-    const handleChange = (field) => (e) => {
+    const handleChange = useCallback((field) => (e) => {
         const value = e?.target ? e.target.value : e
         setFormData(prev => ({ ...prev, [field]: value }))
-    }
+    }, [])
 
-    const handleToggle = (field) => (value) => {
+    const handleToggle = useCallback((field) => (value) => {
         setFormData(prev => ({ ...prev, [field]: value }))
-    }
+    }, [])
 
-    const addVariable = () => {
+    const addVariable = useCallback(() => {
         if (newVariable.trim() && !formData.variables.includes(newVariable.trim())) {
             setFormData(prev => ({
                 ...prev,
@@ -50,14 +50,14 @@ export default function NewAgentDrawer({ isOpen, onClose }) {
             }))
             setNewVariable('')
         }
-    }
+    }, [newVariable, formData.variables])
 
-    const removeVariable = (variable) => {
+    const removeVariable = useCallback((variable) => {
         setFormData(prev => ({
             ...prev,
             variables: prev.variables.filter(v => v !== variable)
         }))
-    }
+    }, [])
 
     const handleSubmit = async () => {
         setLoading(true)

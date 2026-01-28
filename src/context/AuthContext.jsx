@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState, useMemo } from 'react'
 
 const AuthContext = createContext(null)
 
@@ -37,15 +37,17 @@ export function AuthProvider({ children }) {
         setCurrentWorkspace(workspace)
     }
 
+    const value = useMemo(() => ({
+        user,
+        currentWorkspace,
+        login,
+        logout,
+        selectWorkspace,
+        isAuthenticated: !!user
+    }), [user, currentWorkspace])
+
     return (
-        <AuthContext.Provider value={{
-            user,
-            currentWorkspace,
-            login,
-            logout,
-            selectWorkspace,
-            isAuthenticated: !!user
-        }}>
+        <AuthContext.Provider value={value}>
             {children}
         </AuthContext.Provider>
     )
